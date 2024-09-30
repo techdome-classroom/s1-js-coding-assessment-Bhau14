@@ -1,44 +1,25 @@
-const {isValid} = require("./program1");
-const assert = require("assert");
+function isValid(s) {
+    const stack = [];
+    const mapping = {
+        '(': ')',
+        '{': '}',
+        '[': ']'
+    };
 
+    for (let char of s) {
+        // If the character is a left bracket, push the corresponding right bracket onto the stack
+        if (mapping[char]) {
+            stack.push(mapping[char]);
+        } else {
+            // If the stack is empty or the top of the stack does not match the current character
+            if (stack.length === 0 || stack.pop() !== char) {
+                return false;
+            }
+        }
+    }
 
+    // If the stack is empty, all brackets were matched correctly
+    return stack.length === 0;
+}
 
-describe("test cases for problem 1 ", function () {
-
-    it("test case 1", function () {
-        const result = isValid("()");
-        assert.equal(true, result);
-    });
-
-    it("test case 2", function () {
-        const result = isValid("()[]{}");
-        assert.equal(true, result);
-    });
-
-    it("test case 3", function () {
-        const result = isValid("{[()]}");
-        assert.equal(true, result);
-    });
-
-    it("test case 4", function () {
-        const result = isValid("(]");
-        assert.equal(false, result);
-    });
-
-    it("test case 5", function () {
-        const result = isValid("([)]");
-        assert.equal(false, result);
-    });
-
-    it("test case 6", function () {
-        const result = isValid("");
-        assert.equal(true, result);
-    });
-
-    it("test case 7", function () {
-        const result = isValid("(){");
-        assert.equal(false, result);
-    });
-
-})
-
+module.exports = { isValid };
